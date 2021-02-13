@@ -1,7 +1,7 @@
 
 function GetMessage(messages: string[][]): string {
 
-    let decodedMsg = '';
+    let decodedMsg: string[] = [];
 
     //saco mensajes erroneos del principio para corregir desfasaje
     let originalMsgLength = messages.map(m => m.length).reduce((a,b) => Math.min(a,b));
@@ -13,13 +13,13 @@ function GetMessage(messages: string[][]): string {
         const msg = firstSatelliteMsg[i];
         
         if(msg !== "")
-            decodedMsg += ` ${msg}`;
+            decodedMsg.push(msg)
         else {
-            decodedMsg += ` ${SearchMissingMsg(shortMessages, i)}`;
+            decodedMsg.push(SearchMissingMsg(shortMessages,i))
         }
     }
 
-    return decodedMsg;
+    return decodedMsg.join(' ');
 }
 
 function SearchMissingMsg(messages: string[][], position: number) {
