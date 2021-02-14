@@ -18,4 +18,15 @@ class Satellite {
         this.coordinates = Satellite.GlobalCoordinates[this.name];
     }
 
+    getMsgLength(): number {
+        return this.message.length;
+    }
+
+    fixMsgDelay(realLength: number) {
+        this.message = this.message.slice(this.message.length-realLength, this.message.length);        
+    }
+
+    getWordAt(position: number) {
+        return this.message[position];
+    }
 }

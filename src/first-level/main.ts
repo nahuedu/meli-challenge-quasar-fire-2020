@@ -1,33 +1,12 @@
 
 function getMessage(messages: string[][]): string {
+    const ken = new Satellite('kenobi', 0, messages[0]);
+    const sky = new Satellite('skywalker', 0, messages[1]);
+    const sato = new Satellite('sato', 0, messages[2]);
 
-    let decodedMsg: string[] = [];
+    const fleet = new AllianceFleet([ken, sky, sato]);
 
-    //saco mensajes erroneos del principio para corregir desfasaje
-    let originalMsgLength = messages.map(m => m.length).reduce((a,b) => Math.min(a,b));
-    let shortMessages = messages.map(m => m.slice(m.length-originalMsgLength, m.length));
-
-    let firstSatelliteMsg = shortMessages[0];
-    
-    for (let i = 0; i < firstSatelliteMsg.length; i++) {
-        const msg = firstSatelliteMsg[i];
-        
-        if(msg !== "")
-            decodedMsg.push(msg)
-        else {
-            decodedMsg.push(searchMissingMsg(shortMessages,i))
-        }
-    }
-
-    return decodedMsg.join(' ');
-}
-
-function searchMissingMsg(messages: string[][], position: number) {
-    messages.forEach(msg => {
-        if(msg[position] !== "")
-            return msg[position];
-    })
-    return '';
+    return fleet.decodeEnemyMsg();
 }
 
 const kenobi: [number, number] = [-500, 200]
@@ -120,3 +99,9 @@ function areEqual(pointA: [number, number], pointB: [number, number]): boolean {
 function round(num: number) {
     return Number(num.toFixed(2))
 }
+
+console.log(getMessage([
+    ['', '', '', '', ''],
+    ['este', '', 'un', ''],
+    ['', '', 'es', '', 'mensaje']
+]));
