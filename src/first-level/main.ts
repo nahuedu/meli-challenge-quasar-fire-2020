@@ -30,9 +30,9 @@ function searchMissingMsg(messages: string[][], position: number) {
     return '';
 }
 
-const kenobi: [number, number] = [0,1]//[-500, 200]
-const skywalker: [number, number] = [2,0]//[100, -100]
-const sato: [number, number] = [2,2]//[500, 100]
+const kenobi: [number, number] = [-500, 200]
+const skywalker: [number, number] = [100, -100]
+const sato: [number, number] = [500, 100]
 
 function getLocation(distKen: number, distSky: number, distSato: number) {
     let intKenSky = intersection(kenobi, distKen, skywalker, distSky);
@@ -120,12 +120,3 @@ function areEqual(pointA: [number, number], pointB: [number, number]): boolean {
 function round(num: number) {
     return Number(num.toFixed(2))
 }
-
-
-console.log(getMessage([
-    ['', 'este', 'es', 'un', 'mensaje'],
-    ['este', '', 'un', 'mensaje'],
-    ['', '', 'es', '', 'mensaje']
-]))
-
-console.log(getLocation(2,1,1))
