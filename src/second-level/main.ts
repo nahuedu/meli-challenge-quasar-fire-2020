@@ -4,7 +4,6 @@ import { Satellite } from '../domain/Satellite';
 import bodyParser from 'body-parser';
 
 const app = express()
-const port = 3000
 app.use(bodyParser.json())
 
 app.post('/topsecret', (req, res) => {
@@ -36,6 +35,11 @@ app.post('/topsecret', (req, res) => {
   }
 })
 
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = '3000';
+}
+
 app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`)
+  console.log(`Server listening at port ${port}`)
 })
