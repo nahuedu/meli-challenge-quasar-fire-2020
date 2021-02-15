@@ -1,1 +1,1 @@
-web: tsc && node dist/first-level/main.js
+web: tsc && node dist/second-level/main.js
