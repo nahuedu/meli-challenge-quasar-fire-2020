@@ -1,4 +1,6 @@
-class AllianceFleet {
+import { Satellite } from "./Satellite";
+
+export class AllianceFleet {
 
     private kenobi: Satellite;
     private skywalker: Satellite;

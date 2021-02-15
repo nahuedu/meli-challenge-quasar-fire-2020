@@ -1,3 +1,5 @@
+import { AllianceFleet } from "../domain/AllianceFleet";
+import { Satellite } from "../domain/Satellite";
 
 function getMessage(messages: string[][]): string {
     const kenobi = new Satellite('kenobi', 0, messages[0]);
@@ -19,3 +21,10 @@ function getLocation(distKen: number, distSky: number, distSato: number) {
 
     return fleet.findEnemyLocation();
 }
+
+console.log(getMessage([
+    ['', '', '', '', ''],
+    ['este', '', 'un', ''],
+    ['', '', 'es', '', 'mensaje']
+]));
+console.log(getLocation(2, 1, 1));

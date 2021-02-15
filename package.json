@@ -1,8 +1,11 @@
 {
     "scripts": {
-        "start": "tsc && node dist/main.js"
+        "cmd": "tsc && node dist/first-level/main.js",
+        "api": "tsc && node dist/second-level/main.js"
     },
     "dependencies": {
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
         "typescript": "^4.1.5"
     }
 }

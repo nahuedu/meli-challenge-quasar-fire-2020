@@ -1,9 +1,9 @@
-class Satellite {
+export class Satellite {
 
     static GlobalCoordinates: { [key:string]: [number, number]} = {
-        'kenobi': [-500, -200],
-        'skywalker': [100, -100],
-        'sato': [500, 100]
+        'kenobi': [0,1],//[-500, -200],
+        'skywalker': [2,0],//[100, -100],
+        'sato': [2,2]//[500, 100]
     }
 
     private name: string;
