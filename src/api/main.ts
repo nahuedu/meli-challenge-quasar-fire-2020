@@ -12,11 +12,11 @@ app.post('/topsecret', async (req, res) => {
     const repo = new SatelliteRepository();
     let satellites = [];
 
-    req.body.satellites.forEach(async s => {
+    for (const s of req.body.satellites) {
       let sat = await repo.getSatelliteByName(s.name);
       sat.receiveMessage(s.distance, s.message);
       satellites.push(sat);
-    });
+    }
 
     const fleet = new AllianceFleet(satellites);
   
@@ -51,12 +51,9 @@ app.post('/topsecret_split/:name', async (req, res) => {
 app.get('/topsecret_split', async (req, res) => {
   try {
     const repo = new SatelliteRepository();
-
-    const kenobi = await repo.getSatelliteWithLastMsg('kenobi');
-    const skywalker =  await repo.getSatelliteWithLastMsg('skywalker');
-    const sato = await repo.getSatelliteWithLastMsg('sato');
+    const satellites = await repo.getAllSatellitesWithLastMsg();
   
-    return res.send([kenobi, skywalker, sato])
+    return res.send(satellites);
     
   } catch (e) {
     return res.status(500).json(e.message);

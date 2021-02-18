@@ -15,6 +15,10 @@ export class Satellite {
         this.message = message;
     }
 
+    getName() {
+        return this.name;
+    }
+
     getMsgLength(): number {
         return this.message.length;
     }

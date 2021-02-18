@@ -72,12 +72,29 @@ export class SatelliteRepository {
     return { distance:message.distance, message:words.map(w => w.word) }
   }
 
-  async getSatelliteWithLastMsg(name: string) {
-    const satellite = await this.getSatelliteByName(name);
-    const lastMsg = await this.getLastMessageFrom(name);
-    satellite.receiveMessage(lastMsg.distance, lastMsg.message);
+  async getAllSatellites(): Promise<Satellite[]> {
+    const client = new Client({
+      connectionString: process.env.DATABASE_URL,
+      ssl: false
+    });
+      
+    await client.connect();
+    let res = await client.query('SELECT ID,NAME,COORDINATE_X,COORDINATE_Y FROM SATELLITE')
 
-    return satellite;
+    return res.rows.map(r => {
+      return new Satellite(r.name, [r.coordinate_x, r.coordinate_y])
+    })
+  }
+
+  async getAllSatellitesWithLastMsg() {
+    const satellites = await this.getAllSatellites();
+
+    for (const sat of satellites) {
+      const lastMsg = await this.getLastMessageFrom(sat.getName());
+      sat.receiveMessage(lastMsg.distance, lastMsg.message);
+    }
+
+    return satellites;
   }
 
 }
