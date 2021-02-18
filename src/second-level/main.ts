@@ -41,8 +41,20 @@ app.post('/topsecret', (req, res) => {
   )
 })
 
-app.get('/topsecret_split', async (req, res) => {
+app.post('/topsecret_split/:name', async (req, res) => {
+  try {
+    const { body, params } = req;
+    const repo = new SatelliteRepository();
 
+    await repo.saveMessage(params.name, body.distance, body.message);
+    return res.status(200).end();
+  } catch (e) {
+    return res.status(500).json(e.message);
+  }
+})
+
+
+app.get('/topsecret_split', async (req, res) => {
   try {
     const repo = new SatelliteRepository();
 
