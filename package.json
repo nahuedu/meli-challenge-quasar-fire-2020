@@ -1,7 +1,7 @@
 {
     "scripts": {
-        "cmd": "tsc && node dist/first-level/main.js",
-        "api": "tsc && export DATABASE_URL=postgresql://nandreoli@localhost:5432/nandreoli && node dist/second-level/main.js"
+        "cmd": "tsc && node dist/cmd/main.js",
+        "api": "tsc && export DATABASE_URL=postgresql://nandreoli@localhost:5432/nandreoli && node dist/api/main.js"
     },
     "dependencies": {
         "@types/node": "^14.14.28",
