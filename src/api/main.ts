@@ -1,20 +1,34 @@
 import express from 'express'
 import { AllianceFleet } from '../domain/AllianceFleet';
-import { Satellite } from '../domain/Satellite';
 import bodyParser from 'body-parser';
 import { SatelliteRepository } from '../repository/SatelliteRepository';
 
 const app = express()
 app.use(bodyParser.json())
 
-function returnEnemyLocation(kenobi: Satellite, skywalker: Satellite, sato: Satellite, response: any) {
-  const fleet = new AllianceFleet(kenobi, skywalker, sato)
+app.post('/topsecret', async (req, res) => {
 
   try {
+    const repo = new SatelliteRepository();
+
+    const kenobiMsg = req.body.satellites.find(s => s.name === 'kenobi');
+    const skywalkerMsg = req.body.satellites.find(s => s.name === 'skywalker');
+    const satoMsg = req.body.satellites.find(s => s.name === 'sato');
+
+    const kenobi = await repo.getSatelliteByName('kenobi');
+    const skywalker = await repo.getSatelliteByName('skywalker');
+    const sato = await repo.getSatelliteByName('sato');
+
+    kenobi.receiveMessage(kenobiMsg.distance, kenobiMsg.message);
+    skywalker.receiveMessage(skywalkerMsg.distance, skywalkerMsg.message);
+    sato.receiveMessage(satoMsg.distance, satoMsg.message);
+
+    const fleet = new AllianceFleet(kenobi, skywalker, sato);
+  
     const location = fleet.findEnemyLocation();
     const message = fleet.decodeEnemyMsg();
 
-    response.send({
+    res.send({
       position: {
         x: location[0],
         y: location[1]
@@ -22,23 +36,8 @@ function returnEnemyLocation(kenobi: Satellite, skywalker: Satellite, sato: Sate
       message: message
     })
   } catch (e) {
-    return response.status(404).json(e.message);
+    return res.status(404).json(e.message);
   }
-}
-
-
-app.post('/topsecret', (req, res) => {
-
-  const kenobi = req.body.satellites.find(s => s.name === 'kenobi');
-  const skywalker = req.body.satellites.find(s => s.name === 'skywalker');
-  const sato = req.body.satellites.find(s => s.name === 'sato');
-
-  return returnEnemyLocation(
-    new Satellite(kenobi.name, kenobi.distance, kenobi.message, Satellite.GlobalCoordinates['kenobi']),
-    new Satellite(skywalker.name, skywalker.distance, skywalker.message, Satellite.GlobalCoordinates['skywalker']),
-    new Satellite(sato.name, sato.distance, sato.message, Satellite.GlobalCoordinates['sato']),
-    res
-  )
 })
 
 app.post('/topsecret_split/:name', async (req, res) => {
@@ -58,11 +57,10 @@ app.get('/topsecret_split', async (req, res) => {
   try {
     const repo = new SatelliteRepository();
 
-    const kenobi = await repo.getSatelliteByName('kenobi');
-    const skywalker =  await repo.getSatelliteByName('skywalker');
-    const sato = await repo.getSatelliteByName('sato');
+    const kenobi = await repo.getSatelliteWithLastMsg('kenobi');
+    const skywalker =  await repo.getSatelliteWithLastMsg('skywalker');
+    const sato = await repo.getSatelliteWithLastMsg('sato');
   
-    //returnEnemyLocation(kenobi, skywalker, sato, res);
     return res.send([kenobi, skywalker, sato])
     
   } catch (e) {

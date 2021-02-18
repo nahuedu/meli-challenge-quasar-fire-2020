@@ -38,7 +38,23 @@ export class SatelliteRepository {
       
     await client.connect();
     let res = await client.query('SELECT ID,NAME,COORDINATE_X,COORDINATE_Y FROM SATELLITE WHERE NAME = $1', [name])
-    
+
+    if(res.rows.length === 0)
+      throw new Error(`Satellite ${name} does not exist`)
+
+    const satellite = res.rows[0];
+    return new Satellite(satellite.name, [satellite.coordinate_x, satellite.coordinate_y])
+  }
+
+  async getLastMessageFrom(name: string) {
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: false
+    });
+      
+    await client.connect();
+    let res = await client.query('SELECT ID,NAME,COORDINATE_X,COORDINATE_Y FROM SATELLITE WHERE NAME = $1', [name])
+
     if(res.rows.length === 0)
       throw new Error(`Satellite ${name} does not exist`)
 
@@ -46,14 +62,22 @@ export class SatelliteRepository {
     res = await client.query('SELECT ID, DISTANCE FROM MESSAGE WHERE SATELLITE_ID = $1 ORDER BY DATE DESC LIMIT 1', [satellite.id])
 
     if(res.rows.length === 0)
-      return new Satellite(satellite.name, 0, [], [satellite.coordinate_x, satellite.coordinate_y]) 
+      return { distance:0, message:[] } 
 
     const message = res.rows[0];
     res = await client.query('SELECT WORD FROM MSG_WORD WHERE MESSAGE_ID = $1 ORDER BY POS ASC', [message.id])
     const words = res.rows;
     await client.end();
     
-    return new Satellite(satellite.name, message.distance, words.map(w => w.word), [satellite.coordinate_x, satellite.coordinate_y])
+    return { distance:message.distance, message:words.map(w => w.word) }
+  }
+
+  async getSatelliteWithLastMsg(name: string) {
+    const satellite = await this.getSatelliteByName(name);
+    const lastMsg = await this.getLastMessageFrom(name);
+    satellite.receiveMessage(lastMsg.distance, lastMsg.message);
+
+    return satellite;
   }
 
 }

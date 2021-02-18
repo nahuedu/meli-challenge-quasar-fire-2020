@@ -1,21 +1,18 @@
 export class Satellite {
 
-    static GlobalCoordinates: { [key:string]: [number, number]} = {
-        'kenobi': [0,1],//[-500, -200],
-        'skywalker': [2,0],//[100, -100],
-        'sato': [2,2]//[500, 100]
-    }
-
     private name: string;
     private distance: number;
     private message: string[];
     private coordinates: [number, number];
 
-    constructor(name: string, distance: number, message: string[], coordinates: [number, number]) {
+    constructor(name: string, coordinates: [number, number]) {
         this.name = name;
+        this.coordinates = coordinates;
+    }
+
+    receiveMessage(distance: number, message: string[]) {
         this.distance = distance;
         this.message = message;
-        this.coordinates = coordinates;
     }
 
     getMsgLength(): number {
