@@ -2,31 +2,31 @@ import { Satellite } from "./Satellite";
 
 export class AllianceFleet {
 
-    private kenobi: Satellite;
-    private skywalker: Satellite;
-    private sato: Satellite;
+    private satellites: Satellite[] = [];
 
-    constructor(kenobi: Satellite, skywalker: Satellite, sato: Satellite) {
-        this.kenobi = kenobi;
-        this.skywalker = skywalker;
-        this.sato = sato;
+    constructor(satellites: Satellite[]) {
+        this.satellites = satellites;
     }
 
     decodeEnemyMsg() {
         let decodedMsg: string[] = [];
-        let satellites = [this.kenobi, this.skywalker, this.sato]
 
         //saco mensajes erroneos del principio para corregir desfasaje
-        let originalMsgLength = satellites.map(m => m.getMsgLength()).reduce((a,b) => Math.min(a,b));
-        satellites.forEach(s => s.fixMsgDelay(originalMsgLength));
+        let originalMsgLength = this.satellites.map(m => m.getMsgLength()).reduce((a,b) => Math.min(a,b));
+        this.satellites.forEach(s => s.fixMsgDelay(originalMsgLength));
 
-        for (let i = 0; i < originalMsgLength; i++) {
-            var word = this.kenobi.getWordAt(i);
-            
-            if(this.isValidWord(word))
-                decodedMsg.push(word)
-            else {
-                decodedMsg.push(this.searchMissingWord([this.skywalker, this.sato],i))
+        if(this.satellites.length > 0) {
+            const firstSat = this.satellites[0];
+            const remainingSats = this.satellites.slice(1, this.satellites.length);
+
+            for (let i = 0; i < originalMsgLength; i++) {
+                var word = firstSat.getWordAt(i);
+                
+                if(this.isValidWord(word))
+                    decodedMsg.push(word)
+                else {
+                    decodedMsg.push(this.searchMissingWord(remainingSats,i))
+                }
             }
         }
     
@@ -49,9 +49,17 @@ export class AllianceFleet {
     }
 
     findEnemyLocation() {
-        let intKenSky = this.kenobi.insersectionWith(this.skywalker);
-        let intKenSato = this.kenobi.insersectionWith(this.sato);
-        let intSkySato = this.skywalker.insersectionWith(this.sato);
+        if(this.satellites.length < 3)
+            throw new Error('Not enough active satellites to find enemy location')
+
+        const fstThreeSats = this.satellites.slice(0, 3);
+        const kenobi = fstThreeSats[0]; //sat name may not be kenobi but doesn't matter
+        const skywalker = fstThreeSats[1];
+        const sato = fstThreeSats[2];
+
+        let intKenSky = kenobi.insersectionWith(skywalker);
+        let intKenSato = kenobi.insersectionWith(sato);
+        let intSkySato = skywalker.insersectionWith(sato);
     
         let enemyCoord: [number, number] | never[] = [];
     
