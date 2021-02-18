@@ -1,12 +1,13 @@
 {
     "scripts": {
         "cmd": "tsc && node dist/first-level/main.js",
-        "api": "tsc && node dist/second-level/main.js"
+        "api": "tsc && export DATABASE_URL=postgresql://nandreoli@localhost:5432/nandreoli && node dist/second-level/main.js"
     },
     "dependencies": {
         "@types/node": "^14.14.28",
         "body-parser": "^1.19.0",
         "express": "^4.17.1",
+        "pg": "^8.5.1",
         "typescript": "^4.1.5"
     },
     "engines": {

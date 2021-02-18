@@ -11,11 +11,11 @@ export class Satellite {
     private message: string[];
     private coordinates: [number, number];
 
-    constructor(name: string, distance: number, message: string[]) {
+    constructor(name: string, distance: number, message: string[], coordinates: [number, number]) {
         this.name = name;
         this.distance = distance;
         this.message = message;
-        this.coordinates = Satellite.GlobalCoordinates[this.name];
+        this.coordinates = coordinates;
     }
 
     getMsgLength(): number {
