@@ -49,8 +49,20 @@ export class AllianceFleet {
     }
 
     findEnemyLocation() {
-        if(this.satellites.length < 3)
+        if(this.satellites.length === 1)
             throw new Error('Not enough active satellites to find enemy location')
+
+        if(this.satellites.length === 2) {
+            const fstSat = this.satellites[0];
+            const sndSat = this.satellites[1];
+            const int = fstSat.insersectionWith(sndSat);
+            
+            if(this.areEqual(int[0], int[1])) {
+                return int[0];    
+            }
+
+            throw new Error('Not enough active satellites to find enemy location')
+        }
 
         const fstThreeSats = this.satellites.slice(0, 3);
         const kenobi = fstThreeSats[0]; //sat name may not be kenobi but doesn't matter
