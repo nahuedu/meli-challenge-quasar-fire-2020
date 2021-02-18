@@ -10,20 +10,15 @@ app.post('/topsecret', async (req, res) => {
 
   try {
     const repo = new SatelliteRepository();
+    let satellites = [];
 
-    const kenobiMsg = req.body.satellites.find(s => s.name === 'kenobi');
-    const skywalkerMsg = req.body.satellites.find(s => s.name === 'skywalker');
-    const satoMsg = req.body.satellites.find(s => s.name === 'sato');
+    req.body.satellites.forEach(async s => {
+      let sat = await repo.getSatelliteByName(s.name);
+      sat.receiveMessage(s.distance, s.message);
+      satellites.push(sat);
+    });
 
-    const kenobi = await repo.getSatelliteByName('kenobi');
-    const skywalker = await repo.getSatelliteByName('skywalker');
-    const sato = await repo.getSatelliteByName('sato');
-
-    kenobi.receiveMessage(kenobiMsg.distance, kenobiMsg.message);
-    skywalker.receiveMessage(skywalkerMsg.distance, skywalkerMsg.message);
-    sato.receiveMessage(satoMsg.distance, satoMsg.message);
-
-    const fleet = new AllianceFleet(kenobi, skywalker, sato);
+    const fleet = new AllianceFleet(satellites);
   
     const location = fleet.findEnemyLocation();
     const message = fleet.decodeEnemyMsg();

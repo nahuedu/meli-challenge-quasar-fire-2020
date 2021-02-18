@@ -15,7 +15,7 @@ function getMessage(messages: string[][]): string {
     const sato = new Satellite('sato', satoCoord);
     sato.receiveMessage(0, messages[2])
 
-    const fleet = new AllianceFleet(kenobi, skywalker, sato);
+    const fleet = new AllianceFleet([kenobi, skywalker, sato]);
 
     return fleet.decodeEnemyMsg();
 }
@@ -31,7 +31,7 @@ function getLocation(distKen: number, distSky: number, distSato: number) {
     const sato = new Satellite('sato', satoCoord);
     sato.receiveMessage(distSato, [])
 
-    const fleet = new AllianceFleet(kenobi, skywalker, sato);
+    const fleet = new AllianceFleet([kenobi, skywalker, sato]);
 
     return fleet.findEnemyLocation();
 }
