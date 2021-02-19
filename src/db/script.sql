@@ -5,7 +5,7 @@ create table SATELLITE (
 	COORDINATE_Y integer not null
 );
 
-insert into SATELLITE(NAME, COORDINATE_X, COORDINATE_Y) values ('kenobi', -500, 200);
+insert into SATELLITE(NAME, COORDINATE_X, COORDINATE_Y) values ('kenobi', -500, -200);
 insert into SATELLITE(NAME, COORDINATE_X, COORDINATE_Y) values ('skywalker', 100, -100);
 insert into SATELLITE(NAME, COORDINATE_X, COORDINATE_Y) values ('sato', 500, 100);
 
