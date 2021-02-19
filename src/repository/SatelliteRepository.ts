@@ -87,9 +87,8 @@ export class SatelliteRepository {
   private getClient() {
     return new Client({
       connectionString: process.env.DATABASE_URL,
-      ssl: {
-        rejectUnauthorized: false
-      }
+      //ssl: { rejectUnauthorized: false },
+      ssl: false
     });
   }
 
