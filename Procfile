@@ -1,1 +1,1 @@
-web: tsc && node dist/api/main.js
+web: tsc && node dist/src/api/main.js

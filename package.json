@@ -1,7 +1,7 @@
 {
     "scripts": {
-        "cmd": "tsc && node dist/cmd/main.js",
-        "api": "tsc && export DATABASE_URL=postgresql://nandreoli@localhost:5432/nandreoli && node dist/api/main.js",
+        "cmd": "tsc && node dist/src/cmd/main.js",
+        "api": "tsc && export DATABASE_URL=postgresql://nandreoli@localhost:5432/nandreoli && node dist/src/api/main.js",
         "test": "tsc && mocha dist/test"
     },
     "dependencies": {
