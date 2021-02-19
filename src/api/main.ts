@@ -53,8 +53,17 @@ app.get('/topsecret_split', async (req, res) => {
     const repo = new SatelliteRepository();
     const satellites = await repo.getAllSatellitesWithLastMsg();
   
-    return res.send(satellites);
-    
+    const fleet = new AllianceFleet(satellites);
+    const location = fleet.findEnemyLocation();
+    const message = fleet.decodeEnemyMsg();
+
+    res.send({
+      position: {
+        x: location[0],
+        y: location[1]
+      },
+      message: message
+    })
   } catch (e) {
     return res.status(500).json(e.message);
   }
