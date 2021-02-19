@@ -87,6 +87,10 @@ export class AllianceFleet {
     }
 
     private areEqual(pointA: [number, number], pointB: [number, number]): boolean {
-        return pointA[0] === pointB[0] && pointA[1] === pointB[1];
+        return this.compareWithError(pointA[0], pointB[0]) && this.compareWithError(pointA[1], pointB[1]);
+    }
+
+    private compareWithError(numA: number, numB: number) {
+        return Math.abs(Math.abs(numA) - Math.abs(numB)) <= 0.04
     }
 }
