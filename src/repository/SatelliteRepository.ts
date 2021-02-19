@@ -4,11 +4,7 @@ import { Satellite } from '../domain/Satellite';
 export class SatelliteRepository {
 
   async saveMessage(name: string, distance: number, message: [string]) {
-    
-    const client = new Client({
-      connectionString: process.env.DATABASE_URL,
-      ssl: false
-    });
+    const client = this.getClient()
     
     try {
       await client.connect();
@@ -31,10 +27,7 @@ export class SatelliteRepository {
 
 
   async getSatelliteByName(name: string) {
-    const client = new Client({
-        connectionString: process.env.DATABASE_URL,
-        ssl: false
-    });
+    const client = this.getClient()
       
     await client.connect();
     let res = await client.query('SELECT ID,NAME,COORDINATE_X,COORDINATE_Y FROM SATELLITE WHERE NAME = $1', [name])
@@ -47,10 +40,7 @@ export class SatelliteRepository {
   }
 
   async getLastMessageFrom(name: string) {
-    const client = new Client({
-        connectionString: process.env.DATABASE_URL,
-        ssl: false
-    });
+    const client = this.getClient()
       
     await client.connect();
     let res = await client.query('SELECT ID,NAME,COORDINATE_X,COORDINATE_Y FROM SATELLITE WHERE NAME = $1', [name])
@@ -73,10 +63,7 @@ export class SatelliteRepository {
   }
 
   async getAllSatellites(): Promise<Satellite[]> {
-    const client = new Client({
-      connectionString: process.env.DATABASE_URL,
-      ssl: false
-    });
+    const client = this.getClient()
       
     await client.connect();
     let res = await client.query('SELECT ID,NAME,COORDINATE_X,COORDINATE_Y FROM SATELLITE')
@@ -95,6 +82,15 @@ export class SatelliteRepository {
     }
 
     return satellites;
+  }
+
+  private getClient() {
+    return new Client({
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    });
   }
 
 }
