@@ -1,7 +1,8 @@
 import { Client } from 'pg';
 import { Satellite } from '../domain/Satellite';
+import { IRepository } from './IRepository';
 
-export class SatelliteRepository {
+export class SatelliteRepository implements IRepository {
 
   async saveMessage(name: string, distance: number, message: [string]) {
     const client = this.getClient()
@@ -39,7 +40,7 @@ export class SatelliteRepository {
     return new Satellite(satellite.name, [satellite.coordinate_x, satellite.coordinate_y])
   }
 
-  async getLastMessageFrom(name: string) {
+  private async getLastMessageFrom(name: string) {
     const client = this.getClient()
       
     await client.connect();
@@ -62,7 +63,7 @@ export class SatelliteRepository {
     return { distance:message.distance, message:words.map(w => w.word) }
   }
 
-  async getAllSatellites(): Promise<Satellite[]> {
+  private async getAllSatellites(): Promise<Satellite[]> {
     const client = this.getClient()
       
     await client.connect();

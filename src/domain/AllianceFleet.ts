@@ -57,7 +57,7 @@ export class AllianceFleet {
             const sndSat = this.satellites[1];
             const int = fstSat.insersectionWith(sndSat);
             
-            if(this.areEqual(int[0], int[1])) {
+            if(this.areSame(int[0], int[1])) {
                 return int[0];    
             }
 
@@ -84,6 +84,10 @@ export class AllianceFleet {
         })
         
         return enemyCoord;
+    }
+
+    private areSame(pointA: [number, number], pointB: [number, number]): boolean {
+        return pointA[0] === pointB[0] && pointA[1] === pointB[1];
     }
 
     private areEqual(pointA: [number, number], pointB: [number, number]): boolean {

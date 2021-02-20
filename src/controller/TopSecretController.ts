@@ -1,17 +1,16 @@
 import { AllianceFleet } from "../domain/AllianceFleet";
 import { Satellite } from "../domain/Satellite";
-import { SatelliteRepository } from "../repository/SatelliteRepository";
+import { IRepository } from "../repository/IRepository";
 
 export class TopSecretController {
 
-    private repository: SatelliteRepository
+    private repository: IRepository
 
-    constructor(repository: SatelliteRepository) {
+    constructor(repository: IRepository) {
         this.repository = repository;
     }
 
     async postTopSecret(params) {
-        const repo = new SatelliteRepository();
         let satellites = [];
 
         for (const s of params) {
