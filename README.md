@@ -1,3 +1,5 @@
+![alt text](https://raw.githubusercontent.com/nahuedu/meli-challenge-quasar-fire-2020/main/logo.png?token=ABW3Z4OEEDPQOH3ZU6CUR63AHGGCM "Logo Title Text 1")
+
 # Operación Fuego de Quasar
 
 ## Nivel 1 *(ejecución local)*
@@ -6,14 +8,14 @@ El programa que contiene las funciones ```GetLocation``` y ```GetMessage``` se e
 > Antes de correrlo por primera vez instalar las dependencias con el comando ```npm install``` desde el directorio raíz
 
 ### GetLocation
-```
-npm run cmd location dist1 dist2 dist3
+```console
+$ npm run cmd location dist1 dist2 dist3
 ```
 Donde ```dist1```, ```dist2``` y ```dist3``` son las distancias al emisor recibidas por los satélites Kenobi, Skywalker y Sato respectivamente.
 
 ### GetMessage
-```
-npm run cmd message
+```console
+$ npm run cmd message
 ```
 El array de mensajes que recibe por parámetro se debe especificar en ```src/cmd/params.ts```.
 
